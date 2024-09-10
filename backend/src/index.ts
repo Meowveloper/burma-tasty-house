@@ -1,22 +1,28 @@
 import express from "express";
 import path from "path";
 import mongoose from "mongoose";
+import morgan from 'morgan';
 import { Request, Response } from "express";
-import expressLayouts from 'ejs-locals';
+import userRoutes from './routes/users';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 require("dotenv/config");
 
 const app = express();
 
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.json()); // to manage json format
+app.use(express.static(path.join(__dirname, "../public"))); // to serve static files in the public folder
+app.use(morgan('dev'));
 
+app.use(cors({
+    origin : process.env.FRONTEND_ORIGIN, 
+    credentials : true
+})); // to prevent cors error
+app.use(cookieParser()); // to manage cookies
 
-app.engine('ejs', expressLayouts);
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.get('/', (req : Request, res : Response) => {
-    res.render('index', { title : null });
-})
+// routes ---
+app.use('/api/users', userRoutes);
+// routes end ---
 mongoose.connect(process.env.MONGO_URL!).then(() => {
     console.log('Views directory:', path.join(__dirname, 'views'));
     console.log('Connected to database "burma-tasty-house"..');

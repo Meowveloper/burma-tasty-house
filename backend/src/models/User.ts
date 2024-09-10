@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import IUser from '../types/IUser';
 import EnumErrorNames from '../types/EnumErrorNames';
 interface IUserModel extends Model<IUser> {
-    register : (name : IUser['name'], email : IUser['email'], password : IUser['password']) => Promise<IUser>;
+    register : (name : IUser['name'], email : IUser['email'], password : IUser['password'], role : IUser['role']) => Promise<IUser>;
     login : (email : IUser['email'], password : IUser['password']) => Promise<IUser>;
 }
 
@@ -31,7 +31,12 @@ const UserSchema = new Schema<IUser>({
     }
 }, { timestamps : true });
 
-UserSchema.statics.register = async function (name : IUser['name'], email : IUser['email'], password : IUser['password']) : Promise<IUser> {
+UserSchema.statics.register = async function (
+        name : IUser['name'],
+        email : IUser['email'],
+        password : IUser['password'],
+        role : IUser['role']
+    ) : Promise<IUser> {
     const userExists = await this.findOne({ email : email });
     if(userExists) {
         const error = new Error("User already exists");
@@ -43,7 +48,8 @@ UserSchema.statics.register = async function (name : IUser['name'], email : IUse
     const user : IUser = new this({
         name : name, 
         email : email, 
-        password : hashedPassword
+        password : hashedPassword, 
+        role : role 
     });
     await user.save();
     return user;
