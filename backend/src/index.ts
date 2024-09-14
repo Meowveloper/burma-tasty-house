@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import userRoutes from './routes/users';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import recipesRoutes from "./routes/recipes";
 require("dotenv/config");
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(cookieParser()); // to manage cookies
 
 // routes ---
 app.use('/api/users', userRoutes);
+app.use('/api/recipes', recipesRoutes);
 // routes end ---
 mongoose.connect(process.env.MONGO_URL!).then(() => {
     console.log('Views directory:', path.join(__dirname, 'views'));
