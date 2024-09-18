@@ -6,11 +6,15 @@ export default {
         extend: {
             colors: {
                 "dark-bg": "#313338",
+
                 "dark-text": "#949BA4",
                 "dark-text-highlight" : "#F2F3F5",
+
                 "dark-card" : "#1E1F22", 
                 "dark-secondary-card" : "#2B2D31", 
-                "dark-elevate" : "#404249"
+                "dark-elevate" : "#404249", 
+                
+                "dark-border" : "#444444"
             },
             fontSize : {
                 "logo" : '30px', 

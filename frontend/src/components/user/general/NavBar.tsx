@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-export default function UserNavBar() {
+export default function NavBar() {
     const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 
     return (
@@ -32,6 +32,7 @@ export default function UserNavBar() {
                     <div className="ps-5 py-3 border-b border-dark-text">
                         <NavLink 
                             to="/" 
+                            onClick={ () => { setShowMobileMenu(false); } }
                             className={({ isActive }) => `${isActive ? "dark:text-dark-text-highlight" : "dark:text-dark-text"}`}
                         >
                             Home
@@ -40,6 +41,7 @@ export default function UserNavBar() {
                     <div className="ps-5 py-3 border-b border-dark-text">
                         <NavLink 
                             to="/recipe-create" 
+                            onClick={ () => { setShowMobileMenu(false); } }
                             className={({ isActive }) => `${isActive ? "dark:text-dark-text-highlight" : "dark:text-dark-text"}`}
                         >
                             Create Recipe

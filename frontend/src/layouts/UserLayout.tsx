@@ -1,12 +1,11 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
-import UserNavBar from "../components/user/UserNavBar";
+import UserGeneralNavBar from "../components/user/general/NavBar";
 import PageAnimate from "./PageAnimate";
 
 export default function UserLayout() {
     return (
         <div>
-            <UserNavBar></UserNavBar>
+            <UserGeneralNavBar></UserGeneralNavBar>
             <main className="p-5">
                 <PageAnimate>
                     <Outlet />

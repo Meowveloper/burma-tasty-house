@@ -1,4 +1,4 @@
-import UserRecipeForm from "../../components/user/UserRecipeForm";
+import UserRecipeForm from "../../components/user/RecipeForm/Index";
 
 export default function UserRecipeCreate() {
     return (
