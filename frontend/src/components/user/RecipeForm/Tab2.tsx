@@ -1,4 +1,10 @@
-export default function Tab2() {
+import IRecipe from "../../../types/IRecipe";
+
+interface IProps {
+    recipe : IRecipe;
+    setRecipe : React.Dispatch<React.SetStateAction<IRecipe>>;
+}
+export default function Tab2(props : IProps) {
     const tags = ["Sugar", "Water", "Eggs", "Chicken", "Pork" , "Beef"];
     return (
         <div>

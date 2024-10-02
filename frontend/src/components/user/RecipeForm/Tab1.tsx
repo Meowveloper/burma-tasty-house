@@ -9,7 +9,6 @@ export default function Tab1(props : IProps) {
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
     
     useEffect(() => {
-        console.log('checking useEffect from components/user/RecipeForm/Tab1');
         if(props.recipe.image) {
             setImagePreviewUrl(URL.createObjectURL(props.recipe.image));
         }

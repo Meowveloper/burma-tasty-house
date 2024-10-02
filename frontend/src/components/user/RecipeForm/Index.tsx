@@ -66,7 +66,7 @@ export default function Index() {
                     {tabNumber === 1 && <UserRecipeFormTab1 recipe={recipe} setRecipe={setRecipe}></UserRecipeFormTab1>}
                 </motion.div>
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 2 ? 1 : 0, height: tabNumber === 2 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
-                    {tabNumber === 2 && <UserRecipeFormTab2></UserRecipeFormTab2>}
+                    {tabNumber === 2 && <UserRecipeFormTab2 recipe={recipe} setRecipe={setRecipe}></UserRecipeFormTab2>}
                 </motion.div>
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 3 ? 1 : 0, height: tabNumber === 3 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
                     {tabNumber === 3 && <UserRecipeFormTab3></UserRecipeFormTab3>}
