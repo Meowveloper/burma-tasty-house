@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserRecipeFormTab1 from "./Tab1";
 import { motion } from "framer-motion";
 import UserRecipeFormTab2 from "./Tab2";
@@ -6,6 +6,7 @@ import UserRecipeFormTab3 from "./Tab3";
 import UserRecipeFormTab4 from "./Tab4";
 import UserRecipeFormTab5 from "./Tab5";
 import IRecipe from "../../../types/IRecipe";
+import EnumLocalStorageKeys from "../../../types/EnumLocalStorageKeys";
 
 type TTabNumber = 1 | 2 | 3 | 4 | 5;
 
@@ -13,7 +14,14 @@ export default function Index() {
 
     const [tabNumber, setTabNumber] = useState<TTabNumber>(1);
 
-    const [ recipe , setRecipe ] = useState<IRecipe>({} as IRecipe);
+    const [ recipe , setRecipe ] = useState<IRecipe>(() => {
+        const draftRecipe = localStorage.getItem(EnumLocalStorageKeys.DraftNewRecipe);
+        return draftRecipe ? (JSON.parse(draftRecipe)) as IRecipe : {} as IRecipe
+    });
+    useEffect(() => {
+        console.log('checking useEffect in components/RecipeForm/Index.tsx');
+        localStorage.setItem(EnumLocalStorageKeys.DraftNewRecipe, JSON.stringify(recipe));
+    }, [recipe]);
 
     
     return (
@@ -69,10 +77,10 @@ export default function Index() {
                     {tabNumber === 2 && <UserRecipeFormTab2 recipe={recipe} setRecipe={setRecipe}></UserRecipeFormTab2>}
                 </motion.div>
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 3 ? 1 : 0, height: tabNumber === 3 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
-                    {tabNumber === 3 && <UserRecipeFormTab3></UserRecipeFormTab3>}
+                    {tabNumber === 3 && <UserRecipeFormTab3 recipe={recipe} setRecipe={setRecipe}></UserRecipeFormTab3>}
                 </motion.div>
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 4 ? 1 : 0, height: tabNumber === 4 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
-                    {tabNumber === 4 && <UserRecipeFormTab4></UserRecipeFormTab4>}
+                    {tabNumber === 4 && <UserRecipeFormTab4 recipe={recipe} setRecipe={setRecipe}></UserRecipeFormTab4>}
                 </motion.div>
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 5 ? 1 : 0, height: tabNumber === 5 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
                     {tabNumber === 5 && <UserRecipeFormTab5></UserRecipeFormTab5>}

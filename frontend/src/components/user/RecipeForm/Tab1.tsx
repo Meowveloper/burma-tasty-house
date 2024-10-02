@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import IRecipe from "../../../types/IRecipe";
 interface IProps {
     recipe : IRecipe;
@@ -8,11 +8,11 @@ export default function Tab1(props : IProps) {
     const hiddenImageInput = useRef<HTMLInputElement>(null);
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
     
-    useEffect(() => {
-        if(props.recipe.image) {
-            setImagePreviewUrl(URL.createObjectURL(props.recipe.image));
-        }
-    }, [props.recipe.image]);
+    // useEffect(() => {
+    //     if(props.recipe.image) {
+    //         setImagePreviewUrl(URL.createObjectURL(props.recipe.image));
+    //     }
+    // }, [props.recipe.image]);
     return (
         <div className="px-4">
             <div className="text-h2 mt-3 font-bold text-center">General Information</div>

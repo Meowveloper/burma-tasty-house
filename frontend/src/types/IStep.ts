@@ -1,8 +1,8 @@
 interface IStep {
-    _id : string;
-    recipe_id : string;
+    _id? : string;
+    recipe_id? : string;
     description : string;
-    image : File;
+    image : File | string | null;
     sequence_number : number;
 }
 
