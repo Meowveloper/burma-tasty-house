@@ -18,7 +18,7 @@ export default function Routes() {
                 {
                     path : '/recipe-create',
                     element : <UserRecipeCreate/>
-                }
+                } 
             ]
         }, 
         {

@@ -1,6 +1,12 @@
 import { useRef, useState } from "react";
+import IRecipe from "../../../types/IRecipe";
 
-export default function Tab5() {
+interface IProps {
+    recipe : IRecipe;
+    setRecipe : React.Dispatch<React.SetStateAction<IRecipe>>;
+}
+
+export default function Tab5(props : IProps) {
     const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
     const hiddenVideoInput = useRef<HTMLInputElement>(null);
     return (
@@ -27,11 +33,15 @@ export default function Tab5() {
             )}
         </div>
     );
+
     function handleVideoChange(e : React.ChangeEvent<HTMLInputElement>) {
+
         const file = e.target.files?.[0];
         if(file) {
             setVideoPreviewUrl(URL.createObjectURL(file));
+            props.setRecipe((prev : IRecipe) => ({ ...prev, video : file }));
         }
 
     }
+
 }

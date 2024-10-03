@@ -61,6 +61,7 @@ export default function Tab4(props : IProps) {
             </div>
         </div>
     );
+
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (file) {
@@ -71,6 +72,7 @@ export default function Tab4(props : IProps) {
 
 
     function addStep () {
+
         const newStep : IStep = {
             sequence_number : newSequenceNumber, 
             description : newDescription, 
@@ -82,7 +84,6 @@ export default function Tab4(props : IProps) {
         setNewDescription('');
         setNewImage(null);
         setImagePreviewUrl(null);
-        
     }
 
 }

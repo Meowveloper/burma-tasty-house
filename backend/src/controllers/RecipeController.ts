@@ -69,7 +69,7 @@ const RecipeController = {
             const videoFile = files["video"]?.[0];
             if (imageFile) removeFile(path.join(__dirname, '..', '..', 'public', imageFile.filename));
             if (videoFile) removeFile(path.join(__dirname, '..', '..', 'public', videoFile.filename));
-            const erroRes: Partial<ICommonError<string>> = {
+            const errorRes: Partial<ICommonError<string>> = {
                 path: "/api/recipes",
                 type: "post method",
                 msg: "error creating recipe",
