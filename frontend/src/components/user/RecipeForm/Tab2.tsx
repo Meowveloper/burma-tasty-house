@@ -1,5 +1,6 @@
 import { useState } from "react";
 import IRecipe from "../../../types/IRecipe";
+import UserGeneralTags from "../general/Tags";
 interface IProps {
     recipe : IRecipe;
     setRecipe : React.Dispatch<React.SetStateAction<IRecipe>>;
@@ -15,13 +16,8 @@ export default function Tab2(props : IProps) {
                 <input onChange={ (e : React.ChangeEvent<HTMLInputElement>) => { setNewTag(e.target.value); } } value={newTag} type="text" className="dark:bg-dark-card rounded-small flex-1 px-3 py-2 outline-none" />
                 <div onClick={ addTag } className="text-logo dark:bg-dark-elevate w-[30px] h-[30px] leading-[30px] rounded-full text-center">+</div>
             </div>
-            <div className="flex mt-3 flex-wrap gap-4">
-                {!!props.recipe.tags?.length && props.recipe.tags.map(item => (
-                    <div key={item} className="dark:bg-dark-elevate flex items-center gap-3 py-1 px-3 rounded-small">
-                        {item}
-                        <div className="dark:bg-dark-secondary-card w-[20px] h-[20px] text-center leading-[20px] text-small rounded-full">X</div>
-                    </div>
-                ))}
+            <div className="mt-3">
+                { props.recipe?.tags?.length && <UserGeneralTags tags={props.recipe.tags}></UserGeneralTags> }
             </div>
             <div className="bg-transparent my-5 w-[95%] mx-auto h-[1px]"></div>
         </div>
