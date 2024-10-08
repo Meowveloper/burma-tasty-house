@@ -29,6 +29,11 @@ export default {
                 "normal" : "20px", 
                 "small" : "10px",
                 "mini" : "5px"
+            }, 
+
+            width : {
+                "half" : "50%", 
+                "45%" : "45%"
             }
         },
     },

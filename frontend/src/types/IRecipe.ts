@@ -13,7 +13,7 @@ interface IRecipe {
     ingredients : Array<string>;
     user : string | IUser;  
     views? : number;
-    steps? : IStep[]; 
+    steps? : IStep[] | string[]; 
     createdAt? : Date; 
     updatedAt? : Date;
 }
