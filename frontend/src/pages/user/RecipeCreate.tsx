@@ -27,7 +27,7 @@ export default function UserRecipeCreate() {
                 </div>
             )}
 
-            {showPreview && <UserRecipeFormPreview recipe={recipe}></UserRecipeFormPreview>}
+            {showPreview && <UserRecipeFormPreview setShowPreview={setShowPreview} recipe={recipe}></UserRecipeFormPreview>}
         </>
     );
 }
