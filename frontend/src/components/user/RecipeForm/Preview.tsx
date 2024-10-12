@@ -60,7 +60,8 @@ export default function Preview(props: IProps) {
                 <div className="col-span-12 border-b dark:border-dark-border pb-2">
                     <div className="flex items-center gap-2">
                         <div>Post owner - </div>
-                        {!!props.recipe?.user && <div className="font-bold text-h3 cursor-pointer">Meow</div>}
+                        {(!!props.recipe?.user && typeof props.recipe?.user === 'string') && <div className="font-bold text-h3 cursor-pointer">{props.recipe.user}</div>}
+                        {(!!props.recipe?.user && typeof props.recipe?.user === 'object') && <div className="font-bold text-h3 cursor-pointer">{props.recipe.user.name}</div>}
                         {!props.recipe?.user && <div className="dark:text-dark-card">No data...</div>}
                     </div>
                     <div className="flex items-center gap-2">
