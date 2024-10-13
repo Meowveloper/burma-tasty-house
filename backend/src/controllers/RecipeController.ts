@@ -58,6 +58,7 @@ const RecipeController = {
     store: async function (req: Request, res: Response) {
         try {
             const recipe: IRecipe = await Recipe.store(req);
+            // const recipeData
             const resObject: ICommonJsonResponse<IRecipe> = {
                 data: recipe,
                 msg: "Successfully created a recipe. id => " + recipe._id,

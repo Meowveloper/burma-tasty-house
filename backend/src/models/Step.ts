@@ -29,4 +29,4 @@ const StepSchema : mongoose.Schema<IStep> = new Schema<IStep>({
     timestamps : true
 });
 
-const Step : IStepModel = mongoose.model<IStep, IStepModel>('Step', StepSchema)
+const Step : IStepModel = mongoose.model<IStep, IStepModel>('Step', StepSchema);

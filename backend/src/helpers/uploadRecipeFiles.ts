@@ -35,7 +35,8 @@ const uploadRecipeFiles = multer({
     fileFilter: fileFilter
 }).fields([
     { name: 'image', maxCount: 1 },  // Single image
-    { name: 'video', maxCount: 1 }   // Single video (optional)
+    { name: 'video', maxCount: 1 },   // Single video (optional)
+    { name : 'steps[].image', maxCount : 15 }
 ]);
 
 export default uploadRecipeFiles;
