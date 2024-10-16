@@ -1,8 +1,10 @@
-import mongoose, { Model, Schema } from "mongoose";
+import mongoose, { Model, ObjectId, Schema } from "mongoose";
 import IRecipe from "../types/IRecipe";
 import User from "./User";
 import { Request } from "express";
 import removeFile from "../helpers/removeFile";
+import IStep from "../types/IStep";
+import Step from '../models/Step';
 
 interface IRecipeModel extends Model<IRecipe> {
     store: (req: Request) => IRecipe;
@@ -45,6 +47,7 @@ const RecipeSchema = new Schema<IRecipe>(
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
+            required : true
         },
         views: {
             type: Number,
@@ -70,8 +73,26 @@ RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | vo
         video: videoFile ? videoFile.filename : null,
     });
     await recipe.validate();
+    const stepsData = req.body.steps;
+    const steps : Array<IStep['_id']> = [];
+
+    for(let i = 0; i < stepsData.length; i++) {
+        const stepData = stepsData[i];
+        const stepImage = files[`steps[${i}].image`]?.[0];
+
+        const stepInstance = new Step({
+            recipe_id : recipe._id, 
+            description : stepData.description,
+            image : stepImage ? stepImage.filename : null, 
+            sequence_number : stepData.sequence_number
+        });
+        await stepInstance.save();
+        steps.push(stepInstance._id);
+    }
+    recipe.steps = steps;
     await recipe.save();
     await User.findByIdAndUpdate(recipe.user, { $push: { recipes: recipe._id } }, { new: true });
+
     return recipe;
 };
 

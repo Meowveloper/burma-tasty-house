@@ -30,3 +30,4 @@ const StepSchema : mongoose.Schema<IStep> = new Schema<IStep>({
 });
 
 const Step : IStepModel = mongoose.model<IStep, IStepModel>('Step', StepSchema);
+export default Step;
