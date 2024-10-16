@@ -52,7 +52,7 @@ export default function Tab4(props : IProps) {
             </div>
             <div className="my-5">
                 <ul>
-                    { !!props.recipe.steps?.length && props.recipe.steps.map((item : IStep) => (
+                    { (props.recipe.steps?.length && typeof props.recipe.steps[0] !== 'string') && (props.recipe.steps as IStep[]).map((item : IStep) => (
                         <li key={item.sequence_number}>
                             <span className="font-bold text-dark-text-highlight">{item.sequence_number}.</span> {item.description}
                         </li>
@@ -79,7 +79,7 @@ export default function Tab4(props : IProps) {
             image : newImage
         }
         
-        props.setRecipe((prev : IRecipe) => ({ ...prev, steps : (prev.steps ? [...prev.steps, newStep ] : [ newStep ]) }))
+        props.setRecipe((prev : IRecipe) => ({ ...prev, steps : (prev.steps?.length ? [...prev.steps, newStep ] : [ newStep ]) } as IRecipe))
         setNewSequenceNumber( prev => prev + 1);
         setNewDescription('');
         setNewImage(null);
