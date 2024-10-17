@@ -14,7 +14,7 @@ const storage: StorageEngine = multer.diskStorage({
 
 // Define fileFilter for both images and videos
 const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-    const imageFileTypes = /jpeg|jpg|png|gif/; // Image file types
+    const imageFileTypes = /jpeg|jpg|png|gif|svg/; // Image file types
     const videoFileTypes = /mp4|avi|mkv/;      // Video file types
     const extName = imageFileTypes.test(path.extname(file.originalname).toLowerCase()) ||
                     videoFileTypes.test(path.extname(file.originalname).toLowerCase());
@@ -36,7 +36,7 @@ const uploadRecipeFiles = multer({
 }).fields([
     { name: 'image', maxCount: 1 },  // Single image
     { name: 'video', maxCount: 1 },   // Single video (optional)
-    { name : 'steps[].image', maxCount : 15 }
+    { name : 'steps', maxCount : 15 }
 ]);
 
 export default uploadRecipeFiles;

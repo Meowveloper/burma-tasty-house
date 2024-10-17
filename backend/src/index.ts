@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction } from "express";
 import path from "path";
 import mongoose from "mongoose";
 import morgan from 'morgan';
@@ -25,6 +25,14 @@ app.use(cookieParser()); // to manage cookies
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipesRoutes);
 // routes end ---
+
+
+// Error handling middleware
+app.use((err : Error, req : Request, res : Response, next : NextFunction) => {
+    console.error(err.stack); // Log the error
+    res.status(500).json({ error: err.message }); // Send error message
+});
+
 mongoose.connect(process.env.MONGO_URL!).then(() => {
     console.log('Views directory:', path.join(__dirname, 'views'));
     console.log('Connected to database "burma-tasty-house"..');

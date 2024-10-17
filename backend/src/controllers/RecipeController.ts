@@ -56,6 +56,7 @@ const RecipeController = {
     },
 
     store: async function (req: Request, res: Response) {
+        console.log('recipe store request body', req.body);
         try {
             const recipe: IRecipe = await Recipe.store(req);
             // const recipeData
