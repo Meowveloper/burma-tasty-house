@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import removeFile from "../helpers/removeFile";
 import IRecipe from "../types/IRecipe";
 import Recipe from "../models/Recipe";
 import ICommonError from "../types/ICommonError";
 import ICommonJsonResponse from "../types/ICommonJsonResponse";
 import path from 'path'
+import { UploadedFile } from "express-fileupload";
 const RecipeController = {
     index: async function (req: Request, res: Response) {
         try {
@@ -57,27 +57,25 @@ const RecipeController = {
 
     store: async function (req: Request, res: Response) {
         console.log('recipe store request body', req.body);
-        try {
-            const recipe: IRecipe = await Recipe.store(req);
-            // const recipeData
-            const resObject: ICommonJsonResponse<IRecipe> = {
-                data: recipe,
-                msg: "Successfully created a recipe. id => " + recipe._id,
-            };
-            return res.status(200).send(resObject);
-        } catch (e) {
-            const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-            const imageFile = files["image"]?.[0];
-            const videoFile = files["video"]?.[0];
-            if (imageFile) removeFile(path.join(__dirname, '..', '..', 'public', imageFile.filename));
-            if (videoFile) removeFile(path.join(__dirname, '..', '..', 'public', videoFile.filename));
-            const errorRes: Partial<ICommonError<string>> = {
-                path: "/api/recipes",
-                type: "post method",
-                msg: "error creating recipe",
-            };
-            return res.status(500).send(e);
-        }
+        console.log('recipe store request body.steps', req.body.steps);
+        console.log('recipe store files', req.files);
+        // try {
+        //     const recipe: IRecipe = await Recipe.store(req);
+        //     // const recipeData
+        //     const resObject: ICommonJsonResponse<IRecipe> = {
+        //         data: recipe,
+        //         msg: "Successfully created a recipe. id => " + recipe._id,
+        //     };
+        //     return res.status(200).send(resObject);
+        // } catch (e) {
+        //     const errorRes: Partial<ICommonError<string>> = {
+        //         path: "/api/recipes",
+        //         type: "post method",
+        //         msg: "error creating recipe",
+        //     };
+        //     return res.status(500).send(e);
+        // }
+        return res.status(200).send({ message: 'Delete later' });
     },
 };
 

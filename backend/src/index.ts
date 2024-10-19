@@ -1,5 +1,6 @@
-import express, { NextFunction } from "express";
+import express, { NextFunction, urlencoded } from "express";
 import path from "path";
+import fileUpload from 'express-fileupload';
 import mongoose from "mongoose";
 import morgan from 'morgan';
 import { Request, Response } from "express";
@@ -12,7 +13,12 @@ require("dotenv/config");
 const app = express();
 
 app.use(express.json()); // to manage json format
+app.use(urlencoded({ extended : true }));
 app.use(express.static(path.join(__dirname, "../public"))); // to serve static files in the public folder
+app.use(fileUpload({
+    createParentPath : true, 
+    limits : { fileSize : 100 * 1024 * 1024 }
+}));
 app.use(morgan('dev'));
 
 app.use(cors({

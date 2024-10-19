@@ -2,9 +2,12 @@ import mongoose, { Model, ObjectId, Schema } from "mongoose";
 import IRecipe from "../types/IRecipe";
 import User from "./User";
 import { Request } from "express";
-import removeFile from "../helpers/removeFile";
 import IStep from "../types/IStep";
 import Step from '../models/Step';
+import { UploadedFile } from "express-fileupload";
+import path from 'path';
+import uploadFile from "../helpers/uploadFile";
+import EnumFileTypes from "../types/EnumFileTypes";
 
 interface IRecipeModel extends Model<IRecipe> {
     store: (req: Request) => IRecipe;
@@ -64,13 +67,15 @@ const RecipeSchema = new Schema<IRecipe>(
     }
 );
 RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | void> {
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-    const imageFile = files["image"]?.[0];
-    const videoFile = files["video"]?.[0];
+    if(!req.files?.image) throw new Error('Recipe image is required!!');
+    const recipeImage = req.files.image as UploadedFile;
+    const recipeVideo = req.files.video as UploadedFile;
+
+
     const recipe: IRecipe = new Recipe({
         ...req.body,
-        image: imageFile ? imageFile.filename : null,
-        video: videoFile ? videoFile.filename : null,
+        image : uploadFile(recipeImage, EnumFileTypes.Image),
+        video : uploadFile(recipeVideo, EnumFileTypes.Video)
     });
     await recipe.validate();
     const stepsData = req.body.steps;
@@ -78,12 +83,10 @@ RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | vo
 
     for(let i = 0; i < stepsData.length; i++) {
         const stepData = stepsData[i];
-        const stepImage = files[`steps[${i}].image`]?.[0];
 
         const stepInstance = new Step({
             recipe_id : recipe._id, 
             description : stepData.description,
-            image : stepImage ? stepImage.filename : null, 
             sequence_number : stepData.sequence_number
         });
         await stepInstance.save();
