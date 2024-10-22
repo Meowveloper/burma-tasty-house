@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import IRecipe from "../../../types/IRecipe";
 
 interface IProps {
@@ -9,6 +9,12 @@ interface IProps {
 export default function Tab5(props : IProps) {
     const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
     const hiddenVideoInput = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        console.log('Checking the infinite loop from components/user/RecipeForm/Tab5');
+        if(props.recipe.video && props.recipe.video instanceof File) {
+            setVideoPreviewUrl(URL.createObjectURL(props.recipe.video));
+        }
+    }, [props.recipe.video])
     return (
         <div>
             <div className="text-h2 mb-5 font-bold mt-3 text-center">
@@ -26,7 +32,7 @@ export default function Tab5(props : IProps) {
                 <input onChange={handleVideoChange} type="file" accept="video/*" ref={hiddenVideoInput} className="hidden" />
             </div>
             {!!videoPreviewUrl && (
-                <video className="h-[400px] w-full" controls>
+                <video className="h-[400px] w-full mb-5" controls>
                     <source src={videoPreviewUrl} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>

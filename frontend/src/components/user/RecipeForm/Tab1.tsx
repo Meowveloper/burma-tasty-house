@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import IRecipe from "../../../types/IRecipe";
 interface IProps {
     recipe : IRecipe;
@@ -6,13 +6,16 @@ interface IProps {
 }
 export default function Tab1(props : IProps) {
     const hiddenImageInput = useRef<HTMLInputElement>(null);
-    const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+    const [ imagePreviewUrl, setImagePreviewUrl ] = useState<string | null>(null);
+
+    useEffect(() => {
+        if(props.recipe.image && props.recipe.image instanceof File) {
+            setImagePreviewUrl(URL.createObjectURL(props.recipe.image));
+        } else if (props.recipe.image && typeof props.recipe.image === 'string') {
+            setImagePreviewUrl(props.recipe.image);
+        }
+    }, [props.recipe.image]);
     
-    // useEffect(() => {
-    //     if(props.recipe.image) {
-    //         setImagePreviewUrl(URL.createObjectURL(props.recipe.image));
-    //     }
-    // }, [props.recipe.image]);
     return (
         <div className="px-4">
             <div className="text-h2 mt-3 font-bold text-center">General Information</div>
@@ -32,7 +35,7 @@ export default function Tab1(props : IProps) {
                     Browse File
                 </div>
                 <input onChange={handleImageChange} type="file" accept="image/*" ref={hiddenImageInput} className="hidden" />
-                {!!imagePreviewUrl && (
+                { !!imagePreviewUrl && (
                     <div className="w-full h-[300px] mt-3 rounded-small overflow-hidden">
                         <img className="w-full h-full" src={imagePreviewUrl} alt="" />
                     </div>
@@ -64,8 +67,8 @@ export default function Tab1(props : IProps) {
     function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (file) {
-            props.setRecipe((prev : IRecipe) => ({...prev, image : file}));
             setImagePreviewUrl(URL.createObjectURL(file));
+            props.setRecipe((prev : IRecipe) => ({...prev, image : file ? file : null}));
         }
     }
 

@@ -7,8 +7,6 @@ import UserRecipeFormTab4 from "./Tab4";
 import UserRecipeFormTab5 from "./Tab5";
 import IRecipe from "../../../types/IRecipe";
 import EnumRecipeFormActions from "../../../types/EnumRecipeFormActions";
-import axios from "../../../utilities/axios";
-import IStep from "../../../types/IStep";
 
 type TTabNumber = 1 | 2 | 3 | 4 | 5;
 interface IProps {
@@ -16,6 +14,7 @@ interface IProps {
     setShowPreview : React.Dispatch<React.SetStateAction<boolean>>;
     recipe : IRecipe;
     setRecipe : React.Dispatch<React.SetStateAction<IRecipe>>;
+    saveRecipe : () => void;
 }
 export default function Index(props : IProps) {
     const [tabNumber, setTabNumber] = useState<TTabNumber>(1);
@@ -83,7 +82,7 @@ export default function Index(props : IProps) {
                             {tabNumber === 5 && <UserRecipeFormTab5 recipe={props.recipe} setRecipe={props.setRecipe}></UserRecipeFormTab5>}
                         </motion.div>
                         <div className="text-center">
-                            <button onClick={saveRecipe} className="dark:bg-dark-elevate disabled:bg-dark-bg hover:dark:bg-dark-card w-[140px] h-[40px] rounded-small me-3">
+                            <button onClick={props.saveRecipe} className="dark:bg-dark-elevate disabled:bg-dark-bg hover:dark:bg-dark-card w-[140px] h-[40px] rounded-small me-3">
                                 Save
                             </button>
                             <button onClick={ () => { props.setShowPreview(true); } } className="dark:bg-dark-elevate disabled:bg-dark-bg hover:dark:bg-dark-card w-[140px] h-[40px] rounded-small">
@@ -95,29 +94,4 @@ export default function Index(props : IProps) {
                 </div>
     );
 
-    function saveRecipe () {
-        //form data
-        const formData = new FormData();
-        formData.append('title', props.recipe.title);
-        formData.append('image', props.recipe.image);
-        if(props.recipe.video && props.recipe.video instanceof File) formData.append('video', props.recipe.video);
-        formData.append('description', props.recipe.description);
-        formData.append('preparation_time', String(props.recipe.preparation_time));
-        formData.append('difficulty_level', String(props.recipe.difficulty_level));
-        props.recipe.ingredients.forEach((item : string, i) => {
-            formData.append(`ingredients[${i}]`, item);
-        });
-        formData.append('user', '66e057444aa915f7d07ec5c2');
-        props.recipe.steps?.forEach((item , i) => {
-            const step = item as IStep;
-            formData.append(`steps[${i}].sequence_number`, String(step.sequence_number));
-            formData.append(`steps[${i}].description`, step.description);
-            if(step.image) formData.append(`steps[${i}].image`, step.image);
-        })
-        //form data end
-
-        axios.post('http://localhost:8000/api/recipes', formData).then(res => {
-            console.log(res);
-        });        
-    }
 }

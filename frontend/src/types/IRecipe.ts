@@ -4,8 +4,8 @@ import IUser from "./IUser";
 interface IRecipe {
     _id? : string;
     title : string;
-    image : File | string;
-    video : File | string | null;
+    image : File | string | ArrayBuffer | null;
+    video : File | string | null | ArrayBuffer;
     description : string;
     preparation_time : number;
     difficulty_level : number;

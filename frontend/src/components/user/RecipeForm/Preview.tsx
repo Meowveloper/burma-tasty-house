@@ -6,6 +6,7 @@ interface IProps {
     recipe: IRecipe;
     notPreview?: boolean;
     setShowPreview?: React.Dispatch<React.SetStateAction<boolean>>;
+    saveRecipe? : () => void;
 }
 
 export default function Preview(props: IProps) {
