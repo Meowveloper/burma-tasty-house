@@ -116,7 +116,7 @@ export default function Preview(props: IProps) {
                         <div className="grid grid-cols-1 gap-2">
                             {/* card */}
                             { props.recipe.steps.map((item : IStep) => (
-                                <div className="dark:bg-dark-card p-2 rounded-small">
+                                <div className="dark:bg-dark-card p-2 rounded-small" key={item.sequence_number}>
                                     <div className="flex items-center gap-3">
                                         <img src={item.image instanceof File ? URL.createObjectURL(item.image) : item.image} className="w-45% h-[150px] rounded-small" alt="" />
                                         <div className="flex-1 flex items-center gap-2">
