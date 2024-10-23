@@ -27,5 +27,6 @@ export default function Tab3(props : IProps) {
 
     function addIngredient() {
         props.setRecipe((prev : IRecipe) => ({ ...prev, ingredients : prev.ingredients ? [...prev.ingredients, newIngredient] : [newIngredient]}));
+        setNewIngredient('');
     }
 }
