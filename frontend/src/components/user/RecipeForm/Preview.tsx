@@ -2,6 +2,7 @@ import IRecipe from "../../../types/IRecipe";
 import UserGeneralTags from "../general/Tags";
 import UserGeneralIngredients from "../general/Ingredients";
 import { Icon } from "@iconify/react";
+import IStep from "../../../types/IStep";
 interface IProps {
     recipe: IRecipe;
     notPreview?: boolean;
@@ -114,29 +115,20 @@ export default function Preview(props: IProps) {
                     {!!props.recipe?.steps?.length && (
                         <div className="grid grid-cols-1 gap-2">
                             {/* card */}
-                            <div className="dark:bg-dark-card p-2 rounded-small">
-                                <div className="flex items-center gap-3">
-                                    <img className="w-45% h-[150px] rounded-small" src="/image-placeholder.jpg" alt="" />
-                                    <div className="flex-1 flex items-center gap-2">
-                                        <div className="text-h3 font-bold">step</div>
-                                        <div className="text-logo font-bold">1</div>
+                            { props.recipe.steps.map((item : IStep) => (
+                                <div className="dark:bg-dark-card p-2 rounded-small">
+                                    <div className="flex items-center gap-3">
+                                        <img src={item.image instanceof File ? URL.createObjectURL(item.image) : item.image} className="w-45% h-[150px] rounded-small" alt="" />
+                                        <div className="flex-1 flex items-center gap-2">
+                                            <div className="text-h3 font-bold">step</div>
+                                            <div className="text-logo font-bold">{item.sequence_number}</div>
+                                        </div>
+                                    </div>
+                                    <div className="mt-3">
+                                        {item.description}
                                     </div>
                                 </div>
-                                <div className="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, iste! Dolor facere consectetur nemo accusamus optio itaque ducimus iure voluptates.</div>
-                            </div>
-                            {/* card end */}
-
-                            {/* card */}
-                            <div className="dark:bg-dark-card p-2 rounded-small">
-                                <div className="flex items-center gap-3">
-                                    <img className="w-45% h-[150px] rounded-small" src="/image-placeholder.jpg" alt="" />
-                                    <div className="flex-1 flex items-center gap-2">
-                                        <div className="text-h3 font-bold">step</div>
-                                        <div className="text-logo font-bold">2</div>
-                                    </div>
-                                </div>
-                                <div className="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, iste! Dolor facere consectetur nemo accusamus optio itaque ducimus iure voluptates.</div>
-                            </div>
+                            ))}
                             {/* card end */}
                         </div>
                     )}
@@ -149,7 +141,7 @@ export default function Preview(props: IProps) {
                     <div className="text-h2 mb-2">Tutorial Video</div>
                     {!!props.recipe?.video && (
                         <video className="h-[200px] w-full" controls>
-                            <source src="/video-placeholder.mp4" type="video/mp4" />
+                            <source src={props.recipe.video instanceof File ? URL.createObjectURL(props.recipe.video) : props.recipe.video} type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
                     )}
@@ -169,7 +161,9 @@ export default function Preview(props: IProps) {
                             Back to Form
                         </button>
                     )}
-                    <button className="dark:bg-dark-elevate px-3 py-2 rounded-small">Save</button>
+                    {(props.setShowPreview && props.saveRecipe) && (
+                        <button onClick={props.saveRecipe} className="dark:bg-dark-elevate px-3 py-2 rounded-small">Save</button>
+                    )}
                 </div>
                 {/* buttons end */}
             </div>

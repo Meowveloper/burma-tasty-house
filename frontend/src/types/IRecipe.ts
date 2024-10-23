@@ -4,8 +4,8 @@ import IUser from "./IUser";
 interface IRecipe {
     _id? : string;
     title : string;
-    image : File | string | ArrayBuffer | null;
-    video : File | string | null | ArrayBuffer;
+    image : File | string | null;
+    video : File | string | null ;
     description : string;
     preparation_time : number;
     difficulty_level : number;
@@ -13,7 +13,7 @@ interface IRecipe {
     ingredients : Array<string>;
     user : string | IUser;  
     views? : number;
-    steps? : IStep[] | string[]; 
+    steps? : IStep[]; 
     createdAt? : Date; 
     updatedAt? : Date;
 }
