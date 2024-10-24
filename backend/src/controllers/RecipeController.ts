@@ -56,26 +56,27 @@ const RecipeController = {
     },
 
     store: async function (req: Request, res: Response) {
+        req.body.ingredients = JSON.parse(req.body.ingredients);
+        req.body.steps = JSON.parse(req.body.steps);
         console.log('recipe store request body', req.body);
-        console.log('recipe store request body.steps', req.body.steps);
         console.log('recipe store files', req.files);
-        // try {
-        //     const recipe: IRecipe = await Recipe.store(req);
-        //     // const recipeData
-        //     const resObject: ICommonJsonResponse<IRecipe> = {
-        //         data: recipe,
-        //         msg: "Successfully created a recipe. id => " + recipe._id,
-        //     };
-        //     return res.status(200).send(resObject);
-        // } catch (e) {
-        //     const errorRes: Partial<ICommonError<string>> = {
-        //         path: "/api/recipes",
-        //         type: "post method",
-        //         msg: "error creating recipe",
-        //     };
-        //     return res.status(500).send(e);
-        // }
-        return res.status(200).send({ message: 'Delete later' });
+        if(req.files) console.log('this is the one', req.files[`step_image_${1}`]);
+        try {
+            const recipe: IRecipe = await Recipe.store(req);
+            // const recipeData
+            const resObject: ICommonJsonResponse<IRecipe> = {
+                data: recipe,
+                msg: "Successfully created a recipe. id => " + recipe._id,
+            };
+            return res.status(200).send(resObject);
+        } catch (e) {
+            const errorRes: Partial<ICommonError<string>> = {
+                path: "/api/recipes",
+                type: "post method",
+                msg: "error creating recipe",
+            };
+            return res.status(500).send(e);
+        }
     },
 };
 

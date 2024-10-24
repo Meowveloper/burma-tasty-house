@@ -83,11 +83,13 @@ RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | vo
 
     for(let i = 0; i < stepsData.length; i++) {
         const stepData = stepsData[i];
+        const stepImage = req.files[`step_image_${stepData.sequence_number}`] as UploadedFile;
 
         const stepInstance = new Step({
             recipe_id : recipe._id, 
             description : stepData.description,
-            sequence_number : stepData.sequence_number
+            sequence_number : stepData.sequence_number, 
+            image : uploadFile(stepImage, EnumFileTypes.StepImage)
         });
         await stepInstance.save();
         steps.push(stepInstance._id);
