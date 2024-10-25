@@ -56,14 +56,18 @@ export default function UserRecipeCreate() {
         formData.append("description", recipe.description);
         formData.append("preparation_time", String(recipe.preparation_time));
         formData.append("difficulty_level", String(recipe.difficulty_level));
-        formData.append("ingredients", JSON.stringify(recipe.ingredients));
+        recipe.ingredients.forEach((item) => {
+            formData.append('ingredients', item);
+        });
         formData.append("user", "66e057444aa915f7d07ec5c2");
         if (recipe.steps) {
             const steps: IStep[] = recipe.steps.map(item => ({
                 ...item,
                 image: item.image instanceof File ? undefined : item.image,
             }));
-            formData.append("steps", JSON.stringify(steps));
+            steps.forEach(item => {
+                formData.append('steps', JSON.stringify(item));
+            });
             recipe.steps?.forEach((step) => {
                 if (step.image instanceof File) {
                     formData.append(`step_image_${step.sequence_number}`, step.image); // Append step image file

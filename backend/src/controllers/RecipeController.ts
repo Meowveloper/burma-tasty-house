@@ -56,13 +56,10 @@ const RecipeController = {
     },
 
     store: async function (req: Request, res: Response) {
-        req.body.ingredients = JSON.parse(req.body.ingredients);
-        req.body.steps = JSON.parse(req.body.steps);
-        console.log('recipe store request body', req.body);
-        console.log('recipe store files', req.files);
-        if(req.files) console.log('this is the one', req.files[`step_image_${1}`]);
+        req.body.steps = req.body.steps.map((item : string) => JSON.parse(item));
         try {
             const recipe: IRecipe = await Recipe.store(req);
+            console.log('here');
             // const recipeData
             const resObject: ICommonJsonResponse<IRecipe> = {
                 data: recipe,

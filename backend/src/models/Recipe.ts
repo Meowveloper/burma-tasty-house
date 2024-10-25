@@ -77,7 +77,7 @@ RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | vo
         image : uploadFile(recipeImage, EnumFileTypes.Image),
         video : uploadFile(recipeVideo, EnumFileTypes.Video)
     });
-    await recipe.validate();
+
     const stepsData = req.body.steps;
     const steps : Array<IStep['_id']> = [];
 
@@ -95,6 +95,7 @@ RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | vo
         steps.push(stepInstance._id);
     }
     recipe.steps = steps;
+    await recipe.validate();
     await recipe.save();
     await User.findByIdAndUpdate(recipe.user, { $push: { recipes: recipe._id } }, { new: true });
 
