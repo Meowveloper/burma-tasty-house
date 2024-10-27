@@ -8,6 +8,8 @@ import { UploadedFile } from "express-fileupload";
 import path from 'path';
 import uploadFile from "../helpers/uploadFile";
 import EnumFileTypes from "../types/EnumFileTypes";
+import ITag from "../types/ITag";
+import Tag from "./Tag";
 
 interface IRecipeModel extends Model<IRecipe> {
     store: (req: Request) => IRecipe;
@@ -60,6 +62,11 @@ const RecipeSchema = new Schema<IRecipe>(
             type : [mongoose.Schema.Types.ObjectId], 
             ref : "Step", 
             required : false
+        }, 
+        tags : {
+            type : [mongoose.Schema.Types.ObjectId],
+            ref : "Tag", 
+            required : true
         }
     },
     {
@@ -67,6 +74,7 @@ const RecipeSchema = new Schema<IRecipe>(
     }
 );
 RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | void> {
+    console.log(req.body);
     if(!req.files?.image) throw new Error('Recipe image is required!!');
     const recipeImage = req.files.image as UploadedFile;
     const recipeVideo = req.files.video as UploadedFile;
@@ -94,7 +102,29 @@ RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | vo
         await stepInstance.save();
         steps.push(stepInstance._id);
     }
+
+    const tagsToStoreInRecipe : Array<mongoose.Schema.Types.ObjectId> = [];
+    if (req.body.tags) {
+        for (const item of req.body.tags) {  // Use for...of for async processing
+            const name = item.trim().replace(/\s+/g, " ").toLowerCase();
+            const existingTag = await Tag.findOne({ name: name });
+
+            if (existingTag) {
+                existingTag.recipes?.push(recipe._id);
+                await existingTag.save();
+                tagsToStoreInRecipe.push(existingTag._id);
+            } else {
+                const newTag = new Tag({
+                    name: name,
+                    recipes: [recipe._id]
+                });
+                await newTag.save();
+                tagsToStoreInRecipe.push(newTag._id);
+            }
+        }
+    }
     recipe.steps = steps;
+    recipe.tags = tagsToStoreInRecipe;
     await recipe.validate();
     await recipe.save();
     await User.findByIdAndUpdate(recipe.user, { $push: { recipes: recipe._id } }, { new: true });

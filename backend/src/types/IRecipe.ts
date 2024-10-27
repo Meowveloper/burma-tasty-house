@@ -1,6 +1,7 @@
 import mongoose, { Document } from "mongoose";
 import IUser from "./IUser";
 import IStep from "./IStep";
+import ITag from "./ITag";
 
 interface IRecipe extends Document {
     _id : mongoose.Schema.Types.ObjectId;
@@ -13,7 +14,8 @@ interface IRecipe extends Document {
     ingredients : Array<string>;
     user : mongoose.Schema.Types.ObjectId | IUser;  
     views? : number;
-    steps? : mongoose.Schema.Types.ObjectId[] | IStep[]
+    steps? : mongoose.Schema.Types.ObjectId[] | IStep[];
+    tags? : mongoose.Schema.Types.ObjectId[] | ITag[];
     createdAt? : Date; 
     updatedAt? : Date;
 }

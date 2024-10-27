@@ -3,10 +3,10 @@ import UserRecipeForm from "../../components/user/RecipeForm/Index";
 import EnumRecipeFormActions from "../../types/EnumRecipeFormActions";
 import UserRecipeFormPreview from "../../components/user/RecipeForm/Preview";
 import IRecipe from "../../types/IRecipe";
-import IStep from "../../types/IStep";
 import axios from "../../utilities/axios";
 import storeObjectInIndexedDB from "../../utilities/storeObjectInIndexDB";
 import getRecipeFromIndexedDB from "../../utilities/getObjectFromIndexDB";
+import appendRecipeToFormData from "../../utilities/appendRecipeToFormData";
 export default function UserRecipeCreate() {
     const [showPreview, setShowPreview] = useState<boolean>(false);
 
@@ -48,34 +48,7 @@ export default function UserRecipeCreate() {
     );
 
     function saveRecipe() {
-        //form data
-        const formData = new FormData();
-        formData.append("title", recipe.title);
-        if (recipe.image && recipe.image instanceof File) formData.append("image", recipe.image);
-        if (recipe.video && recipe.video instanceof File) formData.append("video", recipe.video);
-        formData.append("description", recipe.description);
-        formData.append("preparation_time", String(recipe.preparation_time));
-        formData.append("difficulty_level", String(recipe.difficulty_level));
-        recipe.ingredients.forEach((item) => {
-            formData.append('ingredients', item);
-        });
-        formData.append("user", "66e057444aa915f7d07ec5c2");
-        if (recipe.steps) {
-            const steps: IStep[] = recipe.steps.map(item => ({
-                ...item,
-                image: item.image instanceof File ? undefined : item.image,
-            }));
-            steps.forEach(item => {
-                formData.append('steps', JSON.stringify(item));
-            });
-            recipe.steps?.forEach((step) => {
-                if (step.image instanceof File) {
-                    formData.append(`step_image_${step.sequence_number}`, step.image); // Append step image file
-                }
-            });
-        }
-        //form data end
-
+        const formData : FormData = appendRecipeToFormData(recipe);
         axios
             .post("http://localhost:8000/api/recipes", formData, {
                 headers: {

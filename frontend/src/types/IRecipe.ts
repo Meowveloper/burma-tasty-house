@@ -1,4 +1,5 @@
 import IStep from "./IStep";
+import ITag from "./ITag";
 import IUser from "./IUser";
 
 interface IRecipe {
@@ -9,7 +10,7 @@ interface IRecipe {
     description : string;
     preparation_time : number;
     difficulty_level : number;
-    tags : Array<string>;
+    tags? : Array<string> | Array<ITag>;
     ingredients : Array<string>;
     user : string | IUser;  
     views? : number;
