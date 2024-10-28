@@ -18,6 +18,7 @@ interface IProps {
 }
 export default function Index(props : IProps) {
     const [tabNumber, setTabNumber] = useState<TTabNumber>(1);
+    const [ pageStart, setPageStart ] = useState<boolean>(true);
 
     return (
 
@@ -67,7 +68,7 @@ export default function Index(props : IProps) {
 
                     <div className="dark:bg-dark-secondary-card mt-5 p-3 rounded-normal">
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 1 ? 1 : 0, height: tabNumber === 1 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
-                            {tabNumber === 1 && <UserRecipeFormTab1 recipe={props.recipe} setRecipe={props.setRecipe}></UserRecipeFormTab1>}
+                            {tabNumber === 1 && <UserRecipeFormTab1 recipe={props.recipe} setRecipe={props.setRecipe} pageStart={pageStart} setPageStart={setPageStart}></UserRecipeFormTab1>}
                         </motion.div>
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 2 ? 1 : 0, height: tabNumber === 2 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
                             {tabNumber === 2 && <UserRecipeFormTab2 recipe={props.recipe} setRecipe={props.setRecipe}></UserRecipeFormTab2>}

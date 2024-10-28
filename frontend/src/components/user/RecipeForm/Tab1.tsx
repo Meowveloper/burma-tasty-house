@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import IRecipe from "../../../types/IRecipe";
+import RecipeValidator from "../../../utilities/recipeValidator";
 interface IProps {
     recipe : IRecipe;
-    setRecipe : React.Dispatch<React.SetStateAction<IRecipe>>
+    setRecipe : React.Dispatch<React.SetStateAction<IRecipe>>;
+    pageStart : boolean;
+    setPageStart : React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function Tab1(props : IProps) {
     const hiddenImageInput = useRef<HTMLInputElement>(null);
@@ -22,6 +25,9 @@ export default function Tab1(props : IProps) {
             <div className="mt-3">
                 <div className="px-1 font-bold text-h3">Title</div>
                 <input value={props.recipe.title || ''} onChange={ handleTitleChange } type="text" className="dark:bg-dark-card rounded-small w-full px-3 py-2 outline-none" />
+                { (!props.pageStart && !RecipeValidator.title(props.recipe.title)) && (
+                    <span className="text-red-500 font-bold">title must be at least 3 characters must contain at least one alphabetic character!</span>
+                )}
             </div>
             <div className="dark:bg-dark-border my-4 w-[95%] mx-auto h-[1px]"></div>
             <div className="mt-3">
@@ -61,6 +67,7 @@ export default function Tab1(props : IProps) {
     );
 
     function handleTitleChange(e : React.ChangeEvent<HTMLInputElement>) {
+        props.setPageStart(false);
         props.setRecipe((prev : IRecipe) => ({...prev, title : e.target.value}));
     }
 
