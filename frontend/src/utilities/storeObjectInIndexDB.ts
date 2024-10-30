@@ -3,7 +3,6 @@ import IRecipe from "../types/IRecipe";
 function storeObjectInIndexedDB(data: IRecipe) {
     if (Object.keys(data).length === 0) return;
     const recipeData = { ...data, key: "recipe" };
-    console.log("data data", recipeData);
     const request = indexedDB.open("recipeDB", 1);
 
     request.onupgradeneeded = function () {
@@ -21,7 +20,7 @@ function storeObjectInIndexedDB(data: IRecipe) {
         // Use '0' as a fixed key or any unique string
         const putRequest = store.put(recipeData); // Store the recipe with a fixed key
         putRequest.onsuccess = function () {
-            console.log("Recipe updated successfully:", data);
+            console.log("Recipe updated successfully");
         };
     };
 

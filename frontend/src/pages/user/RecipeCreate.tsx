@@ -15,7 +15,6 @@ export default function UserRecipeCreate() {
     const fetchRecipeFromIndexedDB = () => {
         getRecipeFromIndexedDB(data => {
             if (data) {
-                console.log("Retrieved recipe:", data);
                 setRecipe(data); // Set the retrieved recipe to state
             } else {
                 console.log("recipe not found");
@@ -31,7 +30,6 @@ export default function UserRecipeCreate() {
     useEffect(() => {
         console.log("checking useEffect in pages/user/RecipeCreate.tsx");
         storeObjectInIndexedDB(recipe);
-        console.log("recipe from pages/user/RecipeCreate.tsx", recipe);
     }, [recipe]);
 
     return (
