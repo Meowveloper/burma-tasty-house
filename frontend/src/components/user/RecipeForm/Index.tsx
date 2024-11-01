@@ -26,6 +26,7 @@ export default function Index(props : IProps) {
                     <div className="dark:bg-dark-elevate py-3 rounded-normal flex w-full justify-between px-9 mt-5 ">
                         <div
                             onClick={() => {
+                                setPageStart(true);
                                 setTabNumber(1);
                             }}
                             className={`${tabNumber === 1 ? "dark:bg-dark-card text-dark-text-highlight" : "dark:bg-dark-secondary-card"} h-[25px] w-[25px] leading-[25px] text-center rounded-full`}
@@ -34,6 +35,7 @@ export default function Index(props : IProps) {
                         </div>
                         <div
                             onClick={() => {
+                                setPageStart(true);
                                 setTabNumber(2);
                             }}
                             className={`${tabNumber === 2 ? "dark:bg-dark-card text-dark-text-highlight" : "dark:bg-dark-secondary-card"} h-[25px] w-[25px] leading-[25px] text-center rounded-full`}
@@ -42,6 +44,7 @@ export default function Index(props : IProps) {
                         </div>
                         <div
                             onClick={() => {
+                                setPageStart(true);
                                 setTabNumber(3);
                             }}
                             className={`${tabNumber === 3 ? "dark:bg-dark-card text-dark-text-highlight" : "dark:bg-dark-secondary-card"} h-[25px] w-[25px] leading-[25px] text-center rounded-full`}
@@ -50,6 +53,7 @@ export default function Index(props : IProps) {
                         </div>
                         <div
                             onClick={() => {
+                                setPageStart(true);
                                 setTabNumber(4);
                             }}
                             className={`${tabNumber === 4 ? "dark:bg-dark-card text-dark-text-highlight" : "dark:bg-dark-secondary-card"} h-[25px] w-[25px] leading-[25px] text-center rounded-full`}
@@ -58,6 +62,7 @@ export default function Index(props : IProps) {
                         </div>
                         <div
                             onClick={() => {
+                                setPageStart(true);
                                 setTabNumber(5);
                             }}
                             className={`${tabNumber === 5 ? "dark:bg-dark-card text-dark-text-highlight" : "dark:bg-dark-secondary-card"} h-[25px] w-[25px] leading-[25px] text-center rounded-full`}
@@ -74,7 +79,7 @@ export default function Index(props : IProps) {
                             {tabNumber === 2 && <UserRecipeFormTab2 recipe={props.recipe} setRecipe={props.setRecipe} pageStart={pageStart} setPageStart={setPageStart}></UserRecipeFormTab2>}
                         </motion.div>
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 3 ? 1 : 0, height: tabNumber === 3 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
-                            {tabNumber === 3 && <UserRecipeFormTab3 recipe={props.recipe} setRecipe={props.setRecipe}></UserRecipeFormTab3>}
+                            {tabNumber === 3 && <UserRecipeFormTab3 recipe={props.recipe} setRecipe={props.setRecipe} pageStart={pageStart} setPageStart={setPageStart}></UserRecipeFormTab3>}
                         </motion.div>
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 4 ? 1 : 0, height: tabNumber === 4 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
                             {tabNumber === 4 && <UserRecipeFormTab4 recipe={props.recipe} setRecipe={props.setRecipe}></UserRecipeFormTab4>}
