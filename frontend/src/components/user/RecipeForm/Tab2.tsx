@@ -2,6 +2,7 @@ import { useState } from "react";
 import IRecipe from "../../../types/IRecipe";
 import UserGeneralTags from "../general/Tags";
 import GeneralValidators from "../../../utilities/GeneralValidators";
+import ITag from "../../../types/ITag";
 interface IProps {
     recipe: IRecipe;
     setRecipe: React.Dispatch<React.SetStateAction<IRecipe>>;
@@ -28,7 +29,7 @@ export default function Tab2(props: IProps) {
                 </div>
             </div>
             {!props.pageStart && (!GeneralValidators.isText(newTag) || !GeneralValidators.greaterThanOrEqualTextLength(newTag, 2)) && <span className="text-red-500 font-bold">Tag must contain at least 2(TWO) characters and must contain at least one alphabetic character</span>}
-            <div className="mt-3">{props.recipe?.tags?.length && <UserGeneralTags tags={props.recipe.tags}></UserGeneralTags>}</div>
+            <div className="mt-3">{!!props.recipe?.tags?.length && <UserGeneralTags tags={props.recipe.tags} removeTag={removeTag}></UserGeneralTags>}</div>
             <div className="bg-transparent my-5 w-[95%] mx-auto h-[1px]"></div>
         </div>
     );
@@ -44,5 +45,20 @@ export default function Tab2(props: IProps) {
     {
         props.setPageStart(false);
         setNewTag(e.target.value);
+    }
+    function removeTag (id : string | number) 
+    {
+        let newTags : (string | ITag)[];
+        if(typeof id === 'string') {
+            newTags = props.recipe.tags.filter((item) => {
+                if(typeof item !== 'string') return item._id !== id;
+            });
+        } else if(typeof id === 'number') {
+            newTags = props.recipe.tags.filter((item, i) => {
+                if(typeof item === 'string') return i !== id;
+            })
+        }
+
+        props.setRecipe((prev : IRecipe) => ({...prev, tags : newTags} as IRecipe));
     }
 }

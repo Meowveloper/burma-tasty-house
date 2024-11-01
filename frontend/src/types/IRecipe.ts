@@ -10,11 +10,11 @@ interface IRecipe {
     description : string;
     preparation_time : number;
     difficulty_level : number;
-    tags? : Array<string> | Array<ITag>;
+    tags : Array<string> | Array<ITag>;
     ingredients : Array<string>;
     user : string | IUser;  
-    views? : number;
-    steps? : IStep[]; 
+    views : number;
+    steps : IStep[]; 
     createdAt? : Date; 
     updatedAt? : Date;
 }
