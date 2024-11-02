@@ -35,15 +35,23 @@ export default function Tab3(props: IProps) {
             { (!props.pageStart && (!GeneralValidators.isText(newIngredient) || !GeneralValidators.greaterThanOrEqualTextLength(newIngredient, 3))) && (
                 <span className="text-red-500 font-bold">Each ingredient must have at least 3 characters and one alphabetic character!</span>
             )}
-            <div className="mt-3">{!!props.recipe.ingredients?.length && <UserGeneralIngredients ingredients={props.recipe.ingredients}></UserGeneralIngredients>}</div>
+            <div className="mt-3">{!!props.recipe.ingredients?.length && <UserGeneralIngredients ingredients={props.recipe.ingredients} removeIngredients={removeIngredients}></UserGeneralIngredients>}</div>
             <div className="bg-transparent my-5 w-[95%] mx-auto h-[1px]"></div>
         </div>
     );
 
-    function addIngredient() {
+    function addIngredient()
+    {
         if (!GeneralValidators.isText(newIngredient) || !GeneralValidators.greaterThanOrEqualTextLength(newIngredient, 3)) return;
         props.setRecipe((prev: IRecipe) => ({ ...prev, ingredients: prev.ingredients ? [...prev.ingredients, newIngredient] : [newIngredient] }));
         setNewIngredient("");
         props.setPageStart(true);
+    }
+
+    function removeIngredients (id : number)
+    {
+        const newIngredients = props.recipe.ingredients.filter((item, i) => { if(item) return i !== id; });
+        props.setRecipe((prev) => ({ ...prev, ingredients : newIngredients}));
+
     }
 }
