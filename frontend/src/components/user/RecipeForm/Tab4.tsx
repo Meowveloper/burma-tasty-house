@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import IRecipe from "../../../types/IRecipe";
 import IStep from "../../../types/IStep";
+import StepValidator from "../../../utilities/StepValidator";
 
 interface IProps {
     recipe : IRecipe;
     setRecipe : React.Dispatch<React.SetStateAction<IRecipe>>;
+    pageStart : boolean;
+    setPageStart : React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function Tab4(props : IProps) {
     const hiddenImageInput = useRef<HTMLInputElement>(null);
@@ -18,7 +21,7 @@ export default function Tab4(props : IProps) {
         setNewSequenceNumber(() => {
             return props.recipe.steps?.length ? props.recipe.steps.slice().sort((a, b) => a.sequence_number - b.sequence_number)[props.recipe.steps.length - 1].sequence_number + 1 : 1; // sort and plus one to the latest sequence number
         })
-    }, [ props.recipe.steps]);
+    }, [ props.recipe.steps ]);
 
     const [ newDescription, setNewDescription ] = useState<string>('');
     const [ newImage, setNewImage ] = useState<File | string | undefined>(undefined);
@@ -30,11 +33,17 @@ export default function Tab4(props : IProps) {
             <div className="mb-3">
                 <div className="px-1 font-bold text-h3">Step Number</div>
                 <input onChange={ (e : React.ChangeEvent<HTMLInputElement>) => { setNewSequenceNumber(Number(e.target.value)); } } value={newSequenceNumber} type="number" className="dark:bg-dark-card rounded-small w-full px-3 py-2 outline-none" />
+                { !StepValidator.sequence_number(newSequenceNumber, props.recipe.steps) && (
+                    <span className="text-red-500 font-bold">Sequence number must be greater than 0 and must not be repeated!!</span>
+                )}
             </div>
             <div className="dark:bg-dark-border my-4 w-[95%] mx-auto h-[1px]"></div>
             <div className="mb-3">
                 <div className="px-1 font-bold text-h3">Description</div>
-                <textarea onChange={ (e : React.ChangeEvent<HTMLTextAreaElement>) => { setNewDescription(e.target.value); } } value={newDescription} rows={5} className="dark:bg-dark-card rounded-small w-full px-3 py-2 outline-none"></textarea>
+                <textarea onChange={ (e : React.ChangeEvent<HTMLTextAreaElement>) => { props.setPageStart(false); setNewDescription(e.target.value); } } value={newDescription} rows={5} className="dark:bg-dark-card rounded-small w-full px-3 py-2 outline-none"></textarea>
+                { (!props.pageStart && !StepValidator.description(newDescription)) && (
+                    <span className="text-red-500 font-bold">Description must be at least 5 characters long and must have one alphabetic character!!</span>
+                ) }
             </div>
             <div className="dark:bg-dark-border my-4 w-[95%] mx-auto h-[1px]"></div>
             <div className="mb-3">
@@ -54,6 +63,9 @@ export default function Tab4(props : IProps) {
                 <div className="w-full h-[300px] mt-3 rounded-small overflow-hidden">
                     <img className="w-full h-full" src={ imagePreviewUrl } alt="" />
                 </div>
+            )}
+            { (newImage && !StepValidator.image(newImage)) && (
+                <span className="text-red-500 font-bold">Invalid file type. Only jgeg, jpg, png or svg are allowed.</span>
             )}
             <div className="text-center my-5 rounded-small">
                 <button onClick={addStep} className="bg-dark-border w-[155px] h-[44px] rounded-small">Add</button>
@@ -85,17 +97,18 @@ export default function Tab4(props : IProps) {
 
     function addStep () : void
     {
-
         const newStep : IStep = {
             sequence_number : newSequenceNumber, 
             description : newDescription, 
             image : newImage
         }
+        if(!StepValidator.all(newStep, props.recipe.steps)) return;
         
         props.setRecipe((prev : IRecipe) => ({ ...prev, steps : (prev.steps?.length ? [...prev.steps, newStep ] : [ newStep ]) } as IRecipe))
         setNewDescription('');
         setNewImage(undefined);
         setImagePreviewUrl(null);
+        props.setPageStart(true);
     }
 
     function removeStep (sequence_number : number) : void 

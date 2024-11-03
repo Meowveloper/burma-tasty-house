@@ -82,7 +82,7 @@ export default function Index(props : IProps) {
                             {tabNumber === 3 && <UserRecipeFormTab3 recipe={props.recipe} setRecipe={props.setRecipe} pageStart={pageStart} setPageStart={setPageStart}></UserRecipeFormTab3>}
                         </motion.div>
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 4 ? 1 : 0, height: tabNumber === 4 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
-                            {tabNumber === 4 && <UserRecipeFormTab4 recipe={props.recipe} setRecipe={props.setRecipe}></UserRecipeFormTab4>}
+                            {tabNumber === 4 && <UserRecipeFormTab4 recipe={props.recipe} setRecipe={props.setRecipe} pageStart={pageStart} setPageStart={setPageStart}></UserRecipeFormTab4>}
                         </motion.div>
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: tabNumber === 5 ? 1 : 0, height: tabNumber === 5 ? "auto" : 0 }} transition={{ duration: 0.3 }}>
                             {tabNumber === 5 && <UserRecipeFormTab5 recipe={props.recipe} setRecipe={props.setRecipe}></UserRecipeFormTab5>}
