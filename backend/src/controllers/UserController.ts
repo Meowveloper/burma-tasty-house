@@ -34,7 +34,7 @@ const UserController = {
             };
             return res.status(500).send({
                 errors: {
-                    users: jsonError,
+                    user: jsonError,
                 },
             });
         }
@@ -67,7 +67,7 @@ const UserController = {
             };
             return res.status(500).send({
                 errors: {
-                    users: jsonError,
+                    user: jsonError,
                 },
             });
         }
@@ -89,7 +89,7 @@ const UserController = {
             };
             return res.status(500).send({
                 errors: {
-                    users: jsonError,
+                    user: jsonError,
                 },
             });
         }
