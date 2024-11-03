@@ -118,7 +118,9 @@ export default function Preview(props: IProps) {
                             { props.recipe.steps.map((item : IStep) => (
                                 <div className="dark:bg-dark-card p-2 rounded-small" key={item.sequence_number}>
                                     <div className="flex items-center gap-3">
-                                        <img src={item.image instanceof File ? URL.createObjectURL(item.image) : item.image} className="w-45% h-[150px] rounded-small" alt="" />
+                                        { !!item.image && (
+                                            <img src={item.image instanceof File ? URL.createObjectURL(item.image) : item.image} className="w-45% h-[150px] rounded-small" alt="" />
+                                        )}
                                         <div className="flex-1 flex items-center gap-2">
                                             <div className="text-h3 font-bold">step</div>
                                             <div className="text-logo font-bold">{item.sequence_number}</div>

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import IRecipe from "../../../types/IRecipe";
 import IStep from "../../../types/IStep";
 
@@ -10,10 +10,18 @@ export default function Tab4(props : IProps) {
     const hiddenImageInput = useRef<HTMLInputElement>(null);
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
     const [ newSequenceNumber , setNewSequenceNumber ] = useState<number>(() => {
-        return props.recipe.steps ? props.recipe.steps.length + 1 : 1;
+        return props.recipe.steps?.length ? props.recipe.steps.slice().sort((a, b) => a.sequence_number - b.sequence_number)[props.recipe.steps.length - 1].sequence_number + 1 : 1; // sort and plus one to the latest sequence number
     }); 
+
+    useEffect(() => {
+        console.log('checking infinite loop from components/user/RecipeForm/Tab4');
+        setNewSequenceNumber(() => {
+            return props.recipe.steps?.length ? props.recipe.steps.slice().sort((a, b) => a.sequence_number - b.sequence_number)[props.recipe.steps.length - 1].sequence_number + 1 : 1; // sort and plus one to the latest sequence number
+        })
+    }, [ props.recipe.steps]);
+
     const [ newDescription, setNewDescription ] = useState<string>('');
-    const [ newImage, setNewImage ] = useState<File | null>(null);
+    const [ newImage, setNewImage ] = useState<File | string | undefined>(undefined);
     return (
         <div>
             <div className="text-h2 mb-5 font-bold mt-3 text-center">
@@ -21,7 +29,7 @@ export default function Tab4(props : IProps) {
             </div>
             <div className="mb-3">
                 <div className="px-1 font-bold text-h3">Step Number</div>
-                <input disabled onChange={ (e : React.ChangeEvent<HTMLInputElement>) => { setNewSequenceNumber(Number(e.target.value)); } } value={newSequenceNumber} type="number" min="1" className="dark:bg-dark-card rounded-small w-full px-3 py-2 outline-none" />
+                <input onChange={ (e : React.ChangeEvent<HTMLInputElement>) => { setNewSequenceNumber(Number(e.target.value)); } } value={newSequenceNumber} type="number" className="dark:bg-dark-card rounded-small w-full px-3 py-2 outline-none" />
             </div>
             <div className="dark:bg-dark-border my-4 w-[95%] mx-auto h-[1px]"></div>
             <div className="mb-3">
@@ -51,10 +59,13 @@ export default function Tab4(props : IProps) {
                 <button onClick={addStep} className="bg-dark-border w-[155px] h-[44px] rounded-small">Add</button>
             </div>
             <div className="my-5">
-                <ul>
-                    { (props.recipe.steps?.length && typeof props.recipe.steps[0] !== 'string') && (props.recipe.steps as IStep[]).map((item : IStep) => (
-                        <li key={item.sequence_number}>
-                            <span className="font-bold text-dark-text-highlight">{item.sequence_number}.</span> {item.description}
+                <ul className="space-y-2">
+                    { !!(props.recipe.steps?.length && typeof props.recipe.steps[0] !== 'string') && (props.recipe.steps.slice().sort((a, b) => a.sequence_number - b.sequence_number) as IStep[]).map((item : IStep) => (
+                        <li className="flex justify-between" key={item.sequence_number}>
+                            <div>
+                                <span className="font-bold text-dark-text-highlight">{item.sequence_number}.</span> {item.description}
+                            </div>
+                            <div onClick={ () => { removeStep(item.sequence_number) }} className="dark:bg-dark-card w-[30px] h-[30px] grid place-items-center rounded-[3px]">X</div>
                         </li>
                     )) }
                 </ul>
@@ -62,7 +73,8 @@ export default function Tab4(props : IProps) {
         </div>
     );
 
-    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) : void
+    {
         const file = e.target.files?.[0];
         if (file) {
             setImagePreviewUrl(URL.createObjectURL(file));
@@ -71,7 +83,8 @@ export default function Tab4(props : IProps) {
     }
 
 
-    function addStep () {
+    function addStep () : void
+    {
 
         const newStep : IStep = {
             sequence_number : newSequenceNumber, 
@@ -80,10 +93,15 @@ export default function Tab4(props : IProps) {
         }
         
         props.setRecipe((prev : IRecipe) => ({ ...prev, steps : (prev.steps?.length ? [...prev.steps, newStep ] : [ newStep ]) } as IRecipe))
-        setNewSequenceNumber( prev => prev + 1);
         setNewDescription('');
-        setNewImage(null);
+        setNewImage(undefined);
         setImagePreviewUrl(null);
+    }
+
+    function removeStep (sequence_number : number) : void 
+    {
+        const newSteps = props.recipe.steps.filter((item) => item.sequence_number !== sequence_number);
+        props.setRecipe((prev : IRecipe) => ({ ...prev, steps : newSteps as IRecipe['steps'] }));
     }
 
 }
