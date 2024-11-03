@@ -3,7 +3,8 @@ import GeneralValidators from "./GeneralValidators";
 
 
 class RecipeValidator {
-    public static title(title: IRecipe['title']): boolean {
+    public static title(title: IRecipe['title']): boolean
+    {
         if(title && GeneralValidators.isText(title)) {
             return title.length > 2;
         } else {
@@ -11,29 +12,34 @@ class RecipeValidator {
         }
     }
 
-    public static image(image : IRecipe['image']) : boolean {
+    public static image(image : IRecipe['image']) : boolean
+    {
         if(!(image instanceof File)) return false;
         else {
             return GeneralValidators.isImageByExtension(image.name);
         }
     }
 
-    public static description(description : IRecipe['description']) : boolean {
+    public static description(description : IRecipe['description']) : boolean
+    {
         if(description && GeneralValidators.isText(description)) return description.length <= 1000;
         else return false;
     }
 
-    public static preparation_time(preparation_time : IRecipe['preparation_time']) : boolean {
+    public static preparation_time(preparation_time : IRecipe['preparation_time']) : boolean
+    {
         if(typeof preparation_time !== 'number') return false;
         else return preparation_time >= 3;
     }
 
-    public static difficulty_level(difficulty_level : IRecipe['difficulty_level']) : boolean {
+    public static difficulty_level(difficulty_level : IRecipe['difficulty_level']) : boolean
+    {
         if(typeof difficulty_level !== 'number') return false;
         else return (difficulty_level >= 1 && difficulty_level <= 10);
     }
 
-    public static all(recipe : IRecipe) : boolean {
+    public static all(recipe : IRecipe) : boolean
+    {
 
         if(!recipe.title || !this.title(recipe.title)) return false;
 

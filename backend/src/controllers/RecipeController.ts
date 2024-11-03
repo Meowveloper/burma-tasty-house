@@ -22,7 +22,7 @@ const RecipeController = {
             };
             return res.status(500).send({
                 errors: {
-                    recipes: errRes,
+                    recipe: errRes,
                 },
             });
         }
@@ -72,7 +72,11 @@ const RecipeController = {
                 type: "post method",
                 msg: "error creating recipe",
             };
-            return res.status(500).send(e);
+            return res.status(500).send({
+                errors: {
+                    recipe: errorRes
+                }
+            });
         }
     },
 };
