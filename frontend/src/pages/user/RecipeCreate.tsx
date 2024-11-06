@@ -7,6 +7,7 @@ import axios from "../../utilities/axios";
 import storeObjectInIndexedDB from "../../utilities/storeObjectInIndexDB";
 import getRecipeFromIndexedDB from "../../utilities/getObjectFromIndexDB";
 import appendRecipeToFormData from "../../utilities/appendRecipeToFormData";
+import RecipeValidator from "../../utilities/RecipeValidator";
 export default function UserRecipeCreate() {
     const [showPreview, setShowPreview] = useState<boolean>(false);
 
@@ -45,7 +46,9 @@ export default function UserRecipeCreate() {
         </>
     );
 
-    function saveRecipe() {
+    function saveRecipe()
+    {
+        if(!RecipeValidator.all(recipe, EnumRecipeFormActions.Store)) return;
         const formData : FormData = appendRecipeToFormData(recipe);
         axios
             .post("http://localhost:8000/api/recipes", formData, {
