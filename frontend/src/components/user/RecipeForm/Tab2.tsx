@@ -3,6 +3,7 @@ import IRecipe from "../../../types/IRecipe";
 import UserGeneralTags from "../general/Tags";
 import GeneralValidators from "../../../utilities/GeneralValidators";
 import ITag from "../../../types/ITag";
+import RecipeValidator from "../../../utilities/RecipeValidator";
 interface IProps {
     recipe: IRecipe;
     setRecipe: React.Dispatch<React.SetStateAction<IRecipe>>;
@@ -30,6 +31,9 @@ export default function Tab2(props: IProps) {
             </div>
             {!props.pageStart && (!GeneralValidators.isText(newTag) || !GeneralValidators.greaterThanOrEqualTextLength(newTag, 2)) && <span className="text-red-500 font-bold">Tag must contain at least 2(TWO) characters and must contain at least one alphabetic character</span>}
             <div className="mt-3">{!!props.recipe?.tags?.length && <UserGeneralTags tags={props.recipe.tags} removeTag={removeTag}></UserGeneralTags>}</div>
+            { (!RecipeValidator.tags(props.recipe.tags)) && (
+                <span className="text-red-500 font-bold">Must contain at least one tag!</span>
+            )}
             <div className="bg-transparent my-5 w-[95%] mx-auto h-[1px]"></div>
         </div>
     );

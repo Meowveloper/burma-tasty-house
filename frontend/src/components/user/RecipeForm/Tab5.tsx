@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import IRecipe from "../../../types/IRecipe";
+import RecipeValidator from "../../../utilities/RecipeValidator";
 
 interface IProps {
     recipe : IRecipe;
     setRecipe : React.Dispatch<React.SetStateAction<IRecipe>>;
+    pageStart : boolean;
+    setPageStart : React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Tab5(props : IProps) {
@@ -31,19 +34,25 @@ export default function Tab5(props : IProps) {
                 </div>
                 <input onChange={handleVideoChange} type="file" accept="video/*" ref={hiddenVideoInput} className="hidden" />
             </div>
+            { (!props.pageStart && !RecipeValidator.video(props.recipe.video)) && (
+                <span className="text-red-500 font-bold">Video must be in mp4 format.</span>
+            )}
             {!!videoPreviewUrl && (
                 <video className="h-[400px] w-full mb-5" controls>
                     <source src={videoPreviewUrl} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
             )}
+            
         </div>
     );
 
     function handleVideoChange(e : React.ChangeEvent<HTMLInputElement>) {
 
+        props.setPageStart(false);
         const file = e.target.files?.[0];
         if(file) {
+            if(!RecipeValidator.video(props.recipe.video)) return;
             setVideoPreviewUrl(URL.createObjectURL(file));
             props.setRecipe((prev : IRecipe) => ({ ...prev, video : file }));
         }

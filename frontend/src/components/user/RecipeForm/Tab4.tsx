@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import IRecipe from "../../../types/IRecipe";
 import IStep from "../../../types/IStep";
 import StepValidator from "../../../utilities/StepValidator";
+import RecipeValidator from "../../../utilities/RecipeValidator";
 
 interface IProps {
     recipe : IRecipe;
@@ -70,6 +71,9 @@ export default function Tab4(props : IProps) {
             <div className="text-center my-5 rounded-small">
                 <button onClick={addStep} className="bg-dark-border w-[155px] h-[44px] rounded-small">Add</button>
             </div>
+            { !RecipeValidator.steps(props.recipe.steps) && (
+                <span className="text-red-500 font-bold">Must contain at least 2 steps.</span>
+            )}
             <div className="my-5">
                 <ul className="space-y-2">
                     { !!(props.recipe.steps?.length && typeof props.recipe.steps[0] !== 'string') && (props.recipe.steps.slice().sort((a, b) => a.sequence_number - b.sequence_number) as IStep[]).map((item : IStep) => (

@@ -2,6 +2,7 @@ import { SetStateAction, useRef, useState } from "react";
 import IRecipe from "../../../types/IRecipe";
 import UserGeneralIngredients from "../general/Ingredients";
 import GeneralValidators from "../../../utilities/GeneralValidators";
+import RecipeValidator from "../../../utilities/RecipeValidator";
 interface IProps {
     recipe: IRecipe;
     setRecipe: React.Dispatch<SetStateAction<IRecipe>>;
@@ -36,6 +37,9 @@ export default function Tab3(props: IProps) {
                 <span className="text-red-500 font-bold">Each ingredient must have at least 3 characters and one alphabetic character!</span>
             )}
             <div className="mt-3">{!!props.recipe.ingredients?.length && <UserGeneralIngredients ingredients={props.recipe.ingredients} removeIngredients={removeIngredients}></UserGeneralIngredients>}</div>
+            {!RecipeValidator.ingredients(props.recipe.ingredients) && (
+                <span className="text-red-500 font-bold">Must contain al least 3 ingredients.</span>
+            )}
             <div className="bg-transparent my-5 w-[95%] mx-auto h-[1px]"></div>
         </div>
     );

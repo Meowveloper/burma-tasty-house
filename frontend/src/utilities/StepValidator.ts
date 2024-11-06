@@ -21,6 +21,7 @@ class StepValidator
 
     public static all (newStep : IStep, oldSteps : IStep[]) : boolean
     {
+        if(!newStep.sequence_number || !newStep.description || newStep.description === '') return false;
         if(newStep.sequence_number && !this.sequence_number(newStep.sequence_number, oldSteps)) return false
         if(newStep.description && !this.description(newStep.description)) return false;
         if(newStep.image && !this.image(newStep.image)) return false;
