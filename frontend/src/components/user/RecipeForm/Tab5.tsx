@@ -52,7 +52,7 @@ export default function Tab5(props : IProps) {
         props.setPageStart(false);
         const file = e.target.files?.[0];
         if(file) {
-            if(!RecipeValidator.video(props.recipe.video)) return;
+            console.log(file);
             setVideoPreviewUrl(URL.createObjectURL(file));
             props.setRecipe((prev : IRecipe) => ({ ...prev, video : file }));
         }

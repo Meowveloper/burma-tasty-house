@@ -48,6 +48,7 @@ export default function UserRecipeCreate() {
 
     function saveRecipe()
     {
+        console.log(RecipeValidator.all(recipe, EnumRecipeFormActions.Store));
         if(!RecipeValidator.all(recipe, EnumRecipeFormActions.Store)) return;
         const formData : FormData = appendRecipeToFormData(recipe);
         axios

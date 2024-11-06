@@ -58,6 +58,7 @@ const RecipeController = {
     store: async function (req: Request, res: Response) {
         req.body.steps = req.body.steps.map((item : string) => JSON.parse(item));
         try {
+            console.log('here here');
             const recipe: IRecipe = await Recipe.store(req);
             console.log('here');
             // const recipeData
