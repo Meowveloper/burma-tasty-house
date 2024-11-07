@@ -5,10 +5,8 @@ import { Request } from "express";
 import IStep from "../types/IStep";
 import Step from "../models/Step";
 import { UploadedFile } from "express-fileupload";
-import path from "path";
 import uploadFile from "../helpers/uploadFile";
 import EnumFileTypes from "../types/EnumFileTypes";
-import ITag from "../types/ITag";
 import Tag from "./Tag";
 
 interface IRecipeModel extends Model<IRecipe> {
