@@ -4,6 +4,7 @@ import UserHome from '../pages/user/Home'
 import AdminLayout from '../layouts/AdminLayout';
 import AdminHome from '../pages/admin/AdminHome';
 import UserRecipeCreate from '../pages/user/RecipeCreate';
+import Login from '../pages/auth/Login';
 
 export default function Routes() {
     const routes = createBrowserRouter([
@@ -18,6 +19,10 @@ export default function Routes() {
                 {
                     path : '/recipe-create',
                     element : <UserRecipeCreate/>
+                }, 
+                {
+                    path : '/auth/login', 
+                    element : <Login/>
                 } 
             ]
         }, 
