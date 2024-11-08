@@ -1,11 +1,14 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import axios from "../../utilities/axios";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+
 export default function Register() {
     const [ name, setName ] = useState<string>('');
     const [ email, setEmail ] = useState<string>('');
     const [ password, setPassword ] = useState<string>('');
+    const [ normalRegisterLoading , setNormalRegisterLoading ] = useState<boolean>(false);
+    const navigate = useNavigate();
     return (
         <div>
             <div className="px-3 mt-[50px]">
@@ -40,7 +43,9 @@ export default function Register() {
                     />
                     <div className="text-center">
                         <button onClick={ normalRegister } className="dark:bg-dark-elevate disabled:bg-dark-bg hover:dark:bg-dark-card w-[140px] h-[40px] rounded-small">
-                            Register
+                            { !normalRegisterLoading && <span>Register</span> }
+                            { normalRegisterLoading && <div className="auth-register-normal-register-loader mx-auto"></div> }
+                            
                         </button>
                     </div>
                 </div>
@@ -66,6 +71,23 @@ export default function Register() {
 
     function normalRegister () 
     {
-        console.log(axios);
+        setNormalRegisterLoading(true);
+        const data = {
+            name : name, 
+            email : email, 
+            password : password
+        }
+
+        axios.post('/api/users/register', data).then(res => {
+            console.log(res);
+            setName('');
+            setEmail('');
+            setPassword('');
+            navigate('/');
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            setNormalRegisterLoading(false);
+        })
     }
 }
