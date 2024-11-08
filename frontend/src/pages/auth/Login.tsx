@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import axios from '../../utilities/axios';
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 export default function Login()
 {
@@ -34,7 +35,7 @@ export default function Login()
                 </div>
                 <div className="text-center mt-5">
                     does not have an account? Register
-                    <span className="font-bold text-dark-text-highlight cursor-pointer"> here</span>.
+                    <NavLink to="/auth/register" className="font-bold text-dark-text-highlight cursor-pointer"> here</NavLink>.
                 </div>            
             </div>
         </div>

@@ -5,6 +5,7 @@ import AdminLayout from '../layouts/AdminLayout';
 import AdminHome from '../pages/admin/AdminHome';
 import UserRecipeCreate from '../pages/user/RecipeCreate';
 import Login from '../pages/auth/Login';
+import Register from '../pages/auth/Register';
 
 export default function Routes() {
     const routes = createBrowserRouter([
@@ -23,7 +24,11 @@ export default function Routes() {
                 {
                     path : '/auth/login', 
                     element : <Login/>
-                } 
+                }, 
+                {
+                    path : '/auth/register', 
+                    element : <Register/>
+                }
             ]
         }, 
         {
