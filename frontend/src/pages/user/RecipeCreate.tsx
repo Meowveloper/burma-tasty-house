@@ -52,7 +52,7 @@ export default function UserRecipeCreate() {
         if(!RecipeValidator.all(recipe, EnumRecipeFormActions.Store)) return;
         const formData : FormData = appendRecipeToFormData(recipe);
         axios
-            .post("http://localhost:8000/api/recipes", formData, {
+            .post("/api/recipes", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
