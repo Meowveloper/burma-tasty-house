@@ -40,10 +40,8 @@ app.use((err : Error, req : Request, res : Response, next : NextFunction) => {
 });
 
 mongoose.connect(process.env.MONGO_URL!).then(() => {
-    console.log('Views directory:', path.join(__dirname, 'views'));
     console.log('Connected to database "burma-tasty-house"..');
     app.listen(process.env.PORT, () => {
-
         console.log("App is running on port : " + process.env.PORT);
     });
 });
