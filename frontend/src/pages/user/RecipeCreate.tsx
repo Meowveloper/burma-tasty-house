@@ -8,6 +8,7 @@ import storeObjectInIndexedDB from "../../utilities/storeObjectInIndexDB";
 import getRecipeFromIndexedDB from "../../utilities/getObjectFromIndexDB";
 import appendRecipeToFormData from "../../utilities/appendRecipeToFormData";
 import RecipeValidator from "../../utilities/RecipeValidator";
+
 export default function UserRecipeCreate() {
     const [showPreview, setShowPreview] = useState<boolean>(false);
 
@@ -31,7 +32,7 @@ export default function UserRecipeCreate() {
     useEffect(() => {
         console.log("checking useEffect in pages/user/RecipeCreate.tsx");
         storeObjectInIndexedDB(recipe);
-    }, [recipe]);
+    }, [recipe]); // this useEffect is for updating the recipe in the indexDB every time the recipe changes
 
     return (
         <>
@@ -52,7 +53,7 @@ export default function UserRecipeCreate() {
         if(!RecipeValidator.all(recipe, EnumRecipeFormActions.Store)) return;
         const formData : FormData = appendRecipeToFormData(recipe);
         axios
-            .post("/api/recipes", formData, {
+            .post("/recipes", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

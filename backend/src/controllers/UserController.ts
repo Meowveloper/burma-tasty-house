@@ -5,7 +5,33 @@ import ICommonJsonResponse from "../types/ICommonJsonResponse";
 import ICommonError from "../types/ICommonError";
 import EnumErrorNames from "../types/EnumErrorNames";
 import { setHTTPOnlyToken } from "../helpers/token";
+import getUserFromToken from "../helpers/getUserFromToken";
 const UserController = {
+
+    me : async (req : Request, res: Response) => {
+        try {
+            const user : IUser | null = await getUserFromToken(req);
+            if(user) {
+                const jsonResponse : ICommonJsonResponse<IUser> = {
+                    data : user, 
+                    msg : 'Authenticated'
+                }
+                return res.status(200).send(jsonResponse);
+            } else {
+                throw new Error('User not found');
+            }
+        } catch (e) {
+            const jsonError : ICommonError<string> = {
+                type : 'authentication error', 
+                path : 'api/users/me', 
+                location : 'api/users/me', 
+                msg : (e as Error).message, 
+                value : 'authentication error'
+            }
+            return res.status(401).send(jsonError);
+        }
+    },
+
     login: async (req: Request, res: Response) => {
         try {
             const { email, password } = req.body;
@@ -94,6 +120,15 @@ const UserController = {
             });
         }
     },
+
+    logout : async function (req: Request, res: Response) {
+        res.cookie('token', '', { maxAge : 1 });
+        const jsonResponse : ICommonJsonResponse<null> = {
+            data : null, 
+            msg : "logged out"
+        };
+        return res.status(200).send(jsonResponse);
+    }
 };
 
 export default UserController;
