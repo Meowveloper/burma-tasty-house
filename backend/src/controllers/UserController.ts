@@ -5,17 +5,30 @@ import ICommonJsonResponse from "../types/ICommonJsonResponse";
 import ICommonError from "../types/ICommonError";
 import EnumErrorNames from "../types/EnumErrorNames";
 import { setHTTPOnlyToken } from "../helpers/token";
+import getUserFromToken from "../helpers/getUserFromToken";
 const UserController = {
 
     me : async (req : Request, res: Response) => {
-        if(req.user) {
-            const jsonResponse : ICommonJsonResponse<IUser> = {
-                data : req.user, 
-                msg : 'Authenticated'
+        try {
+            const user : IUser | null = await getUserFromToken(req);
+            if(user) {
+                const jsonResponse : ICommonJsonResponse<IUser> = {
+                    data : user, 
+                    msg : 'Authenticated'
+                }
+                return res.status(200).send(jsonResponse);
+            } else {
+                throw new Error('User not found');
             }
-            return res.status(200).send(jsonResponse);
-        } else {
-            return res.status(401).send({ data : null, msg : 'not authenticated' });
+        } catch (e) {
+            const jsonError : ICommonError<string> = {
+                type : 'authentication error', 
+                path : 'api/users/me', 
+                location : 'api/users/me', 
+                msg : (e as Error).message, 
+                value : 'authentication error'
+            }
+            return res.status(401).send(jsonError);
         }
     },
 

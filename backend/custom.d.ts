@@ -1,5 +1,6 @@
 // custom.d.ts
 import IUser from './src/types/IUser';
+import { Request } from 'express';
 declare global {
   namespace Express {
     interface Request {
@@ -7,3 +8,9 @@ declare global {
     }
   }
 }
+
+// declare module 'express' {
+//   export interface Request {
+//     user : IUser
+//   }
+// }
