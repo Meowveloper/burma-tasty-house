@@ -6,6 +6,19 @@ import ICommonError from "../types/ICommonError";
 import EnumErrorNames from "../types/EnumErrorNames";
 import { setHTTPOnlyToken } from "../helpers/token";
 const UserController = {
+
+    me : async (req : Request, res: Response) => {
+        if(req.user) {
+            const jsonResponse : ICommonJsonResponse<IUser> = {
+                data : req.user, 
+                msg : 'Authenticated'
+            }
+            return res.status(200).send(jsonResponse);
+        } else {
+            return res.status(401).send({ data : null, msg : 'not authenticated' });
+        }
+    },
+
     login: async (req: Request, res: Response) => {
         try {
             const { email, password } = req.body;
@@ -94,6 +107,15 @@ const UserController = {
             });
         }
     },
+
+    logout : async function (req: Request, res: Response) {
+        res.cookie('token', '', { maxAge : 1 });
+        const jsonResponse : ICommonJsonResponse<null> = {
+            data : null, 
+            msg : "logged out"
+        };
+        return res.status(200).send(jsonResponse);
+    }
 };
 
 export default UserController;
