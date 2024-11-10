@@ -8,6 +8,7 @@ import { UploadedFile } from "express-fileupload";
 import uploadFile from "../helpers/uploadFile";
 import EnumFileTypes from "../types/EnumFileTypes";
 import Tag from "./Tag";
+import uploadFilesToCloudinary from "../helpers/uploadFilesToCloudinary";
 
 interface IRecipeModel extends Model<IRecipe> {
     store: (req: Request) => IRecipe;
@@ -73,14 +74,17 @@ const RecipeSchema = new Schema<IRecipe>(
 );
 RecipeSchema.statics.store = async function (req: Request): Promise<IRecipe | void> {
     try {
-        console.log(req.body);
         if (!req.files?.image) throw new Error("Recipe image is required!!");
+        console.log(req.files.image); 
         const recipeImage = req.files.image as UploadedFile;
         const recipeVideo = req.files.video as UploadedFile;
+        const imageFileName = uploadFile(recipeImage, EnumFileTypes.Image);
+
+        uploadFilesToCloudinary(imageFileName);
 
         const recipe: IRecipe = new Recipe({
             ...req.body,
-            image: uploadFile(recipeImage, EnumFileTypes.Image),
+            image: imageFileName,
             video: uploadFile(recipeVideo, EnumFileTypes.Video),
         });
 

@@ -1,9 +1,14 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { AuthContext } from "../../../contexts/AuthContext";
+import axios from '../../../utilities/axios';
+import EnumAuthReducerActionTypes from "../../../types/EnumAuthReducerActionTypes";
 
 export default function NavBar() {
     const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
+    const authContext = useContext(AuthContext);
+    const navigate = useNavigate();
 
     return (
         <nav className="bg-white dark:bg-[#1E1F22] relative">
@@ -13,7 +18,9 @@ export default function NavBar() {
                 </a>
                 <div className="flex items-center justify-start gap-2">
                     <div className="">
-                        <NavLink className="text-h2 font-bold cursor-pointer" to="/auth/login">Login</NavLink>
+                        { authContext.user && <div onClick={ logout } className="text-h2 font-bold cursor-pointer">Logout</div> }
+                        { !authContext.user && <NavLink className="text-h2 font-bold cursor-pointer" to="/auth/login">Login</NavLink>}
+                        
                     </div>
                     <button onClick={() => setShowMobileMenu(prev => !prev)} type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded={showMobileMenu}>
                         <span className="sr-only">Open main menu</span>
@@ -49,4 +56,14 @@ export default function NavBar() {
             </div>
         </nav>
     );
+
+    function logout () {
+        axios.post('/users/logout').then(res => {
+            console.log(res);
+            if(res.status === 200) {
+                authContext.dispatch({ type: EnumAuthReducerActionTypes.Logout });
+                navigate('/');                
+            }
+        })
+    }
 }
