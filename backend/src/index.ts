@@ -38,7 +38,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/recipes", recipesRoutes);
 
 app.get('/', (req : Request, res : Response) => {
-    return res.send('hello world from vercel');
+    res.json('hello world from vercel');
 })
 // routes end ---
 
@@ -52,14 +52,12 @@ const databaseUrl = process.env.ENVIRONMENT == "production" ? process.env.MONGO_
 
 mongoose.connect(databaseUrl).then(() => {
     console.log(process.env.ENVIRONMENT !== "production" ? 'Connected to database "burma-tasty-house"..' : 'Connected to database "burma-tasty-house-production"..');
-    if (process.env.ENVIRONMENT !== "production") {
         app.listen(process.env.PORT, () => {
             console.log("App is running on port : " + process.env.PORT);
         });
-    }
 }).catch((err) => {
     console.log('database connection error', err);
 });
 
-export default app;
+// export default app;
 
