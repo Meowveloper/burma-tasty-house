@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import UserController from "../controllers/UserController";
 import { body } from "express-validator";
 import { handleErrorMessage } from "../middlewares/handleErrorMessages";
@@ -14,6 +14,11 @@ userRoutes.post('/register',[
 ], handleErrorMessage, UserController.register);
 
 userRoutes.post('/logout', UserController.logout);
+
+// userRoutes.get('/login/google', (req : Request, res : Response) => {
+//     console.log('request', req);
+//     console.log('response', res);
+// })
 
 
 export default userRoutes;

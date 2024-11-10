@@ -17,7 +17,9 @@ app.use(urlencoded({ extended : true }));
 app.use(express.static(path.join(__dirname, "../public"))); // to serve static files in the public folder
 app.use(fileUpload({
     createParentPath : true, 
-    limits : { fileSize : 100 * 1024 * 1024 }
+    limits : { fileSize : 100 * 1024 * 1024 }, 
+    useTempFiles : true,
+    tempFileDir : '/tmp/'
 }));
 app.use(morgan('dev'));
 
@@ -39,8 +41,10 @@ app.use((err : Error, req : Request, res : Response, next : NextFunction) => {
     res.status(500).json({ error: err.message }); // Send error message
 });
 
-mongoose.connect(process.env.MONGO_URL!).then(() => {
-    console.log('Connected to database "burma-tasty-house"..');
+const databaseUrl = process.env.ENVIRONMENT == 'production' ? process.env.MONGO_URL_PRODUCTION! : process.env.MONGO_URL! 
+
+mongoose.connect(databaseUrl).then(() => {
+    console.log(process.env.ENVIRONMENT !== 'production' ? 'Connected to database "burma-tasty-house"..' : 'Connected to database "burma-tasty-house-production"..');
     app.listen(process.env.PORT, () => {
         console.log("App is running on port : " + process.env.PORT);
     });
