@@ -37,9 +37,9 @@ app.use(cookieParser()); // to manage cookies
 app.use("/api/users", userRoutes);
 app.use("/api/recipes", recipesRoutes);
 
-app.get('/', (req : Request, res : Response) => {
-    res.json('hello world from vercel');
-})
+app.get("/", (req: Request, res: Response) => {
+    res.json("hello world from vercel");
+});
 // routes end ---
 
 // Error handling middleware
@@ -50,14 +50,18 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 const databaseUrl = process.env.ENVIRONMENT == "production" ? process.env.MONGO_URL_PRODUCTION! : process.env.MONGO_URL!;
 
-mongoose.connect(databaseUrl).then(() => {
-    console.log(process.env.ENVIRONMENT !== "production" ? 'Connected to database "burma-tasty-house"..' : 'Connected to database "burma-tasty-house-production"..');
-        app.listen(process.env.PORT, () => {
-            console.log("App is running on port : " + process.env.PORT);
-        });
-}).catch((err) => {
-    console.log('database connection error', err);
-});
+mongoose
+    .connect(databaseUrl)
+    .then(() => {
+        console.log(process.env.ENVIRONMENT !== "production" ? 'Connected to database "burma-tasty-house"..' : 'Connected to database "burma-tasty-house-production"..');
+        if (process.env.ENVIRONMENT !== "production") {
+            app.listen(process.env.PORT, () => {
+                console.log("App is running on port : " + process.env.PORT);
+            });
+        }
+    })
+    .catch(err => {
+        console.log("database connection error", err);
+    });
 
-// export default app;
-
+module.exports = app;
