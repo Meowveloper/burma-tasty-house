@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from "cloudinary";
-import { UploadedFile } from "express-fileupload";
 import path from 'path';
 require("dotenv/config");
 
